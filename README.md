@@ -111,6 +111,47 @@ $errs
 
 Test on a pilot device for each OS and release you support, including at least one Windows 11 24H2 or later device where the Catalog path downloads a checkpoint CU.
 
-## Licence
+Endpoint PowerShell Scripts
 
-Internal use. Add a licence file if publishing publicly.
+PowerShell scripts for endpoint vulnerability remediation and reporting with Microsoft Intune, Microsoft Graph, Microsoft Defender and Qualys VMDR.
+
+Author: Simon Diaz
+
+Contents
+Folder	Files	Purpose
+App-Removal	Uninstall-NotepadPlusPlus.ps1	Remove every Notepad++ install, machine and per-user, including logged-off profiles
+Chrome	Detect-ChromeVersion.ps1, Remediate-ChromeForceUpdate.ps1	Force Chrome to a minimum version and keep auto-update enabled
+DotNet	Detect-DotNetRuntimeDependency.ps1	Find an EOL .NET runtime, the apps that depend on it, and which architecture roots can be removed
+Graph-Reporting	Get-DeviceUpdateRingGroups.ps1 (+ sample CSV)	Find devices in more than one Windows Update ring group
+Graph-Reporting	Test-IntuneDevices.ps1	Check a device list against Intune, with last contact date, to CSV
+Intune-Remediations/ASR-Block-Events	Detect-AsrBlockEvents.ps1	Report Defender ASR blocks and audits in the Remediations report
+Intune-Remediations/BitLocker-Escrow	BitLockerEscrow-Remediate.ps1	Back up BitLocker recovery keys to Entra ID (Intune or task sequence)
+Intune-Remediations/Company-Portal	Detect/Remediate-CompanyPortal.ps1	Install Company Portal via winget as SYSTEM
+Intune-Remediations/Edge-Latest-Version	Detect/Remediate-EdgeLatestVersion.ps1	Keep Edge Stable on the latest release
+Intune-Remediations/Firefox-Usage	Detect-FirefoxUsage.ps1, FirefoxCompliance.json	Flag devices where Firefox is in use (Remediation or custom compliance)
+Intune-Remediations/No-Op	Detect/Remediate-NoOp.ps1	Do-nothing pair for testing the Remediations pipeline
+Intune-Remediations/Stale-Profile-Apps	Remove-StaleProfileApps-Detection/Remediation.ps1	Remove per-user Zoom, classic Teams and Chrome from dormant profiles, keeping the profile
+Intune-Remediations/Stale-User-Profiles	Remove-StaleUserProfiles-Detection/Remediation.ps1	Delete user profiles unused for 90+ days
+Intune-Tools/DetectR	DetectR.ps1	WPF tool to run a Remediations package on demand against a device list and watch results
+Intune-Tools/IntuneRemediationsExplorer	IntuneRemediationsExplorer.ps1	Read-only WinForms browser and exporter for all Remediations packages
+Office	Detect-OfficeUpdate.ps1, Remediate-OfficeUpdateDiag.ps1	Force a Microsoft 365 Apps security build with user popups
+Office	Test-M365MonthlyEnterpriseChannel.ps1	Check a device can reach the Monthly Enterprise Channel CDN
+Qualys	Get-QualysKEVReport.ps1	CISA KEV findings on Windows 11 ranked by device count, with per-device detail
+Qualys	Get-QualysTop10Threats.ps1	Top 10 QIDs on Windows 10/11 by affected host count
+Qualys	Test-QualysKEVAccess.ps1	Connectivity, auth and KEV/RTI availability check
+
+Each script has a matching .md or a folder README.md covering what it does, settings and deployment.
+
+Conventions
+- Endpoint scripts target Windows PowerShell 5.1.
+- Intune Remediations: exit 0 = compliant / success, exit 1 = non-compliant / failure. A short Write-Output line appears in the report columns (2048 character limit).
+- Run endpoint scripts as SYSTEM in 64-bit PowerShell unless the README says otherwise.
+- Logs go to %ProgramData%\Microsoft\IntuneManagementExtension\Logs where noted, so Intune "Collect diagnostics" picks them up.
+
+Before you use them
+- Test on a pilot group first.
+- Version numbers, QIDs and build numbers in the Office and Chrome scripts reflect the advisory they were written for. Update them for your own case.
+- No organisation-specific data is included. Supply your own tenant, platform URLs and credentials.
+
+Licence
+MIT
