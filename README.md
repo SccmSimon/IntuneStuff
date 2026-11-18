@@ -153,5 +153,3 @@ Before you use them
 - Version numbers, QIDs and build numbers in the Office and Chrome scripts reflect the advisory they were written for. Update them for your own case.
 - No organisation-specific data is included. Supply your own tenant, platform URLs and credentials.
 
-Licence
-MIT
